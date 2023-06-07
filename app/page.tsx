@@ -3,6 +3,7 @@ import Header from "@/components/Header";
 import DestinationCard from "@/components/DestinationCard";
 import ExperienceCard from "@/components/ExperienceCard";
 import Jumbotron from "@/components/Jumbotron";
+import Footer from "@/components/Footer";
 
 async function getDestinations() {
   const response = await fetch("https://www.jsonkeeper.com/b/4G1G");
@@ -58,6 +59,8 @@ export default async function HomePage() {
           />
         </section>
       </main>
+
+      <Footer />
     </div>
   );
 }
