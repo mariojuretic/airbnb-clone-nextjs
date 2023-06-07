@@ -2,6 +2,7 @@ import Banner from "@/components/Banner";
 import Header from "@/components/Header";
 import DestinationCard from "@/components/DestinationCard";
 import ExperienceCard from "@/components/ExperienceCard";
+import Jumbotron from "@/components/Jumbotron";
 
 async function getDestinations() {
   const response = await fetch("https://www.jsonkeeper.com/b/4G1G");
@@ -41,11 +42,20 @@ export default async function HomePage() {
         <section className="pt-8 sm:pt-16">
           <h2 className="mb-8 text-4xl font-semibold">Live Anywhere</h2>
 
-          <div className="-m-4 flex space-x-4 overflow-x-scroll p-4 scrollbar-hide">
+          <div className="-my-4 -ml-4 flex space-x-4 overflow-x-scroll py-4 pl-4 scrollbar-hide">
             {experiences?.map(({ img, title }) => (
               <ExperienceCard key={title} img={img} title={title} />
             ))}
           </div>
+        </section>
+
+        <section className="pt-8 sm:pt-16">
+          <Jumbotron
+            img="https://links.papareact.com/4cj"
+            title="The Greatest Outdoors"
+            description="Wishlists curated by Airbnb."
+            buttonText="Get Inspired"
+          />
         </section>
       </main>
     </div>
