@@ -1,9 +1,7 @@
 import Banner from "@/components/Banner";
-import Header from "@/components/Header";
 import DestinationCard from "@/components/DestinationCard";
 import ExperienceCard from "@/components/ExperienceCard";
 import Jumbotron from "@/components/Jumbotron";
-import Footer from "@/components/Footer";
 
 async function getDestinations() {
   const response = await fetch("https://www.jsonkeeper.com/b/4G1G");
@@ -20,11 +18,10 @@ export default async function HomePage() {
     await Promise.all([getDestinations(), getExperiences()]);
 
   return (
-    <div>
-      <Header />
+    <>
       <Banner />
 
-      <main className="mx-auto max-w-7xl px-8 pb-8 sm:px-16 sm:pb-16">
+      <div className="mx-auto max-w-7xl px-8 pb-8 sm:px-16 sm:pb-16">
         <section className="pt-8 sm:pt-16">
           <h2 className="mb-8 text-4xl font-semibold">Explore Nearby</h2>
 
@@ -58,9 +55,7 @@ export default async function HomePage() {
             buttonText="Get Inspired"
           />
         </section>
-      </main>
-
-      <Footer />
-    </div>
+      </div>
+    </>
   );
 }

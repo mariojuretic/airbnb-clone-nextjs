@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import Image from "next/image";
 import {
   MagnifyingGlassIcon,
@@ -43,7 +44,7 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-50 grid w-full grid-cols-3 items-center gap-y-5 bg-white p-5 shadow-md lg:px-10">
       {/* Left */}
-      <div>
+      <Link href="/">
         <Image
           src="https://links.papareact.com/qd3"
           alt="Airbnb logo"
@@ -51,7 +52,7 @@ export default function Header() {
           height={40}
           className="cursor-pointer"
         />
-      </div>
+      </Link>
 
       {/* Middle - Search */}
       <div className="flex items-center rounded-full p-2 lg:border-2 lg:shadow-sm">
