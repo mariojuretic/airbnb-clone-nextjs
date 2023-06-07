@@ -3,3 +3,8 @@ interface Destination {
   location: string;
   distance: string;
 }
+
+interface Experience {
+  img: string;
+  title: string;
+}

@@ -1,21 +1,28 @@
 import Banner from "@/components/Banner";
 import Header from "@/components/Header";
 import DestinationCard from "@/components/DestinationCard";
+import ExperienceCard from "@/components/ExperienceCard";
 
 async function getDestinations() {
   const response = await fetch("https://www.jsonkeeper.com/b/4G1G");
   return response.json();
 }
 
+async function getExperiences() {
+  const response = await fetch("https://www.jsonkeeper.com/b/VHHT");
+  return response.json();
+}
+
 export default async function HomePage() {
-  const destinations: Destination[] = await getDestinations();
+  const [destinations, experiences]: [Destination[], Experience[]] =
+    await Promise.all([getDestinations(), getExperiences()]);
 
   return (
     <div>
       <Header />
       <Banner />
 
-      <main className="mx-auto max-w-7xl px-8 sm:px-16">
+      <main className="mx-auto max-w-7xl px-8 pb-8 sm:px-16 sm:pb-16">
         <section className="pt-8 sm:pt-16">
           <h2 className="mb-8 text-4xl font-semibold">Explore Nearby</h2>
 
@@ -27,6 +34,16 @@ export default async function HomePage() {
                 location={location}
                 distance={distance}
               />
+            ))}
+          </div>
+        </section>
+
+        <section className="pt-8 sm:pt-16">
+          <h2 className="mb-8 text-4xl font-semibold">Live Anywhere</h2>
+
+          <div className="-m-4 flex space-x-4 overflow-x-scroll p-4 scrollbar-hide">
+            {experiences?.map(({ img, title }) => (
+              <ExperienceCard key={title} img={img} title={title} />
             ))}
           </div>
         </section>
