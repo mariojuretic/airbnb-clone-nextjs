@@ -17,6 +17,7 @@ import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
 
 import { useSearchStore } from "@/store/SearchStore";
+import progress from "@/lib/progress";
 
 export default function Header() {
   const router = useRouter();
@@ -53,6 +54,7 @@ export default function Header() {
       `/search?location=${searchTerm}&from=${formattedStartDate}&to=${formattedEndDate}&guests=${noOfGuests}`
     );
 
+    progress.start();
     resetSearch();
   };
 
