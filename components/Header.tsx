@@ -3,6 +3,8 @@
 import Link from "next/link";
 import Image from "next/image";
 import { DateRangePicker, RangeKeyDict } from "react-date-range";
+import { format } from "date-fns";
+import { useRouter } from "next/navigation";
 import {
   MagnifyingGlassIcon,
   GlobeAltIcon,
@@ -17,6 +19,7 @@ import "react-date-range/dist/theme/default.css";
 import { useSearchStore } from "@/store/SearchStore";
 
 export default function Header() {
+  const router = useRouter();
   const {
     searchTerm,
     startDate,
@@ -40,6 +43,17 @@ export default function Header() {
   const dateSelectHandler = ({ selection }: RangeKeyDict) => {
     if (!selection.startDate || !selection.endDate) return;
     setDates(selection.startDate, selection.endDate);
+  };
+
+  const searchHandler = () => {
+    const formattedStartDate = format(new Date(startDate), "yyyy-MM-dd");
+    const formattedEndDate = format(new Date(endDate), "yyyy-MM-dd");
+
+    router.push(
+      `/search?location=${searchTerm}&from=${formattedStartDate}&to=${formattedEndDate}&guests=${noOfGuests}`
+    );
+
+    resetSearch();
   };
 
   const selectionRange = { startDate, endDate, key: "selection" };
@@ -109,7 +123,10 @@ export default function Header() {
             >
               Cancel
             </button>
-            <button className="grow rounded-full bg-red-400 py-2 text-white">
+            <button
+              onClick={searchHandler}
+              className="grow rounded-full bg-red-400 py-2 text-white"
+            >
               Search
             </button>
           </div>

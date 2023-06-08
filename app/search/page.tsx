@@ -1,18 +1,48 @@
+import { redirect } from "next/navigation";
+import { format } from "date-fns";
+
 import PropertyCard from "@/components/PropertyCard";
+
+type Props = {
+  searchParams: {
+    location: string | undefined;
+    from: string | undefined;
+    to: string | undefined;
+    guests: string | undefined;
+  };
+};
 
 async function getSearchResults() {
   const response = await fetch("https://www.jsonkeeper.com/b/5NPS");
   return response.json();
 }
 
-export default async function SearchPage() {
+export default async function SearchPage({ searchParams }: Props) {
+  const {
+    location,
+    from: startDate,
+    to: endDate,
+    guests: noOfGuests,
+  } = searchParams;
+
+  if (!location || !startDate || !endDate || !noOfGuests) {
+    redirect("/");
+  }
+
+  // fetch properties based on search params
   const searchResults: Property[] = await getSearchResults();
+
+  const formattedStartDate = format(new Date(startDate), "dd MMMM yyyy");
+  const formattedEndDate = format(new Date(endDate), "dd MMMM yyyy");
+  const range = `${formattedStartDate} - ${formattedEndDate}`;
 
   return (
     <div className="flex">
       <section className="grow px-5 py-12 lg:px-10">
-        <p className="mb-2 text-xs">Found 300+ stays for 2 guests</p>
-        <h1 className="text-3xl font-semibold">Stays in London</h1>
+        <p className="mb-2 text-xs">
+          {searchResults.length}+ stays | {range} | {noOfGuests} guests
+        </p>
+        <h1 className="text-3xl font-semibold">Stays in {location}</h1>
 
         <div className="hidden space-x-3 whitespace-nowrap border-b py-6 text-gray-800 lg:flex">
           <p className="button">Cancellation Flexibility</p>
