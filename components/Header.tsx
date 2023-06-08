@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { DateRangePicker, RangeKeyDict } from "react-date-range";
 import {
   MagnifyingGlassIcon,
   GlobeAltIcon,
@@ -9,37 +10,39 @@ import {
   UserCircleIcon,
   UsersIcon,
 } from "@heroicons/react/24/outline";
-import { useState } from "react";
-import { DateRangePicker, RangeKeyDict } from "react-date-range";
 
 import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
 
+import { useSearchStore } from "@/store/SearchStore";
+
 export default function Header() {
-  const [searchInput, setSearchInput] = useState<string>("");
-  const [startDate, setStartDate] = useState<Date>(new Date());
-  const [endDate, setEndDate] = useState<Date>(new Date());
-  const [numOfGuests, setNumOfGuests] = useState<number>(1);
+  const {
+    searchTerm,
+    startDate,
+    endDate,
+    noOfGuests,
+    setSearchTerm,
+    setDates,
+    setNoOfGuests,
+    resetSearch,
+  } = useSearchStore((state) => ({
+    searchTerm: state.searchTerm,
+    startDate: state.startDate,
+    endDate: state.endDate,
+    noOfGuests: state.noOfGuests,
+    setSearchTerm: state.setSearchTerm,
+    setDates: state.setDates,
+    setNoOfGuests: state.setNoOfGuests,
+    resetSearch: state.resetSearch,
+  }));
 
   const dateSelectHandler = ({ selection }: RangeKeyDict) => {
     if (!selection.startDate || !selection.endDate) return;
-
-    setStartDate(selection.startDate);
-    setEndDate(selection.endDate);
+    setDates(selection.startDate, selection.endDate);
   };
 
-  const cancelHandler = () => {
-    setSearchInput("");
-    setStartDate(new Date());
-    setEndDate(new Date());
-    setNumOfGuests(1);
-  };
-
-  const selectionRange = {
-    startDate,
-    endDate,
-    key: "selection",
-  };
+  const selectionRange = { startDate, endDate, key: "selection" };
 
   return (
     <header className="sticky top-0 z-50 grid w-full grid-cols-3 items-center gap-y-5 bg-white p-5 shadow-md lg:px-10">
@@ -60,8 +63,8 @@ export default function Header() {
           type="text"
           placeholder="Start your search"
           className="grow bg-transparent text-sm text-gray-600 outline-none placeholder:text-gray-400 lg:px-4"
-          value={searchInput}
-          onChange={(e) => setSearchInput(e.target.value)}
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
         />
         <MagnifyingGlassIcon className="hidden h-8 w-8 cursor-pointer rounded-full bg-red-400 p-2 text-white lg:block" />
       </div>
@@ -77,13 +80,13 @@ export default function Header() {
         </div>
       </div>
 
-      {searchInput && (
+      {searchTerm && (
         <div className="col-span-3 mx-auto flex flex-col">
           <DateRangePicker
             ranges={[selectionRange]}
-            minDate={new Date()}
-            rangeColors={["#f87171"]}
             onChange={dateSelectHandler}
+            minDate={new Date()}
+            rangeColors={["#f87171", "#00FF00"]}
           />
 
           <div className="mt-5 flex items-center border-b">
@@ -93,15 +96,15 @@ export default function Header() {
             <input
               type="number"
               className="w-16 px-2 text-lg text-red-400 outline-none"
-              value={numOfGuests}
-              onChange={(e) => setNumOfGuests(+e.target.value)}
+              value={noOfGuests}
+              onChange={(e) => setNoOfGuests(+e.target.value)}
               min={1}
             />
           </div>
 
           <div className="mt-5 flex items-center space-x-5">
             <button
-              onClick={cancelHandler}
+              onClick={resetSearch}
               className="grow rounded-full bg-gray-100 py-2"
             >
               Cancel
