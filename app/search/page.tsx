@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { format } from "date-fns";
 
 import PropertyCard from "@/components/PropertyCard";
+import MapView from "@/components/MapView";
 
 type Props = {
   searchParams: {
@@ -57,6 +58,10 @@ export default async function SearchPage({ searchParams }: Props) {
             <PropertyCard key={item.title} {...item} />
           ))}
         </div>
+      </section>
+
+      <section className="hidden min-w-[600px] xl:flex">
+        <MapView />
       </section>
     </div>
   );
