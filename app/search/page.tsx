@@ -60,7 +60,7 @@ export default async function SearchPage({ searchParams }: Props) {
         </div>
       </section>
 
-      <section className="hidden min-w-[600px] xl:flex">
+      <section className="hidden w-2/5 xl:flex 2xl:w-1/2">
         <MapView />
       </section>
     </div>
